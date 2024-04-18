@@ -243,3 +243,4 @@ cython_debug/
 
 # End of https://www.toptal.com/developers/gitignore/api/python,django
 .DS_Store
+django-chat/config/conf.yaml
