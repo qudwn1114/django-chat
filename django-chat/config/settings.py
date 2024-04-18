@@ -1,20 +1,24 @@
 from pathlib import Path
-import os
+import os, yaml
+
+CONFIG_FILE = './config/conf.yaml'
+with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&qt4)305tkkxf(hdf#(8mlx(p#(&)zpxrl76^bykfw2mclav7l'
+SECRET_KEY = config['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config['DEBUG']
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config['ALLOWED_HOSTS']
 
 
 # Application definition

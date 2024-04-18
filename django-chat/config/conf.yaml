@@ -1,0 +1,5 @@
+SECRET_KEY: 'django-insecure-t2olonpp+ts%p&&4zv#@ni1rqr*9+i#lx8@er*2@mf12s7!x^p'
+
+DEBUG: TRUE
+
+ALLOWED_HOSTS: ['*']
