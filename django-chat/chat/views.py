@@ -94,12 +94,6 @@ class HomeView(LoginRequiredMixin, View):
         
         return render(request, 'index.html', context)
 
-    def post(self, request: HttpRequest, *args, **kwargs):
-        room = request.POST['room']
-        url =''
-        return JsonResponse({'message':'Chat Room Joined', 'url':url}, status = 200)
-    
-
 def room(request, room_name):
     context = {}
     context['room_name'] = room_name
