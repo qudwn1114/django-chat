@@ -98,11 +98,12 @@ class HomeView(LoginRequiredMixin, View):
     login_url = 'chat:login'
     def get(self, request: HttpRequest, *args, **kwargs):
         context = {}
-        chat_room_id_list = ChatUser.objects.filter(user=request.user).values_list('id', flat=True)
+        chat_room_id_list = ChatUser.objects.filter(user=request.user).values_list('chat_room_id', flat=True)
+
         messages = ChatMessage.objects.filter(chat_room=OuterRef("pk")).order_by("-created_at")
+
         message_created_at_subquery = Subquery(messages.values("created_at")[:1])
         message_subquery = Subquery(messages.values("message")[:1])
-
         chat_room_list = ChatRoom.objects.annotate(
             newest_message_created_at = message_created_at_subquery,
             newest_message = message_subquery,
@@ -111,7 +112,7 @@ class HomeView(LoginRequiredMixin, View):
             'id', 'room_name', 'created_at', 'newest_message', 'newest_message_created_at', 'chat_user_count'
         ).order_by('-newest_message_created_at', '-created_at')
         context['chat_room_list'] = chat_room_list
-
+        
         return render(request, 'index.html', context)
     
 
@@ -125,7 +126,7 @@ class ChatRoomView(LoginRequiredMixin, View):
         room_name = kwargs.get('room_name')
         context['room_name'] = room_name
         chat_room, _ = ChatRoom.objects.get_or_create(room_name=room_name)
-        chat_user = ChatUser.objects.get_or_create(user=request.user, chat_room=chat_room)
+        chat_user, _ = ChatUser.objects.get_or_create(user=request.user, chat_room=chat_room)
 
         context['user_id'] = request.user.pk
         context['room_id'] = chat_room.pk
