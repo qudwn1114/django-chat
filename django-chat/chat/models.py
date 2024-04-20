@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class ChatRoom(models.Model):
-    room_name = models.CharField(max_length=100, verbose_name='채팅방명')
+    room_name = models.CharField(max_length=100, verbose_name='채팅방명', unique=True)
     status = models.BooleanField(default=True)
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정일')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성일')
@@ -18,6 +18,9 @@ class ChatUser(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성일')
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'chat_room'], name='user_chat_room_unique')
+        ]
         db_table='chat_user'
 
 

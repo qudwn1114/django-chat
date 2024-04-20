@@ -9,8 +9,11 @@
     <textarea id="chat-log" cols="100" rows="20"></textarea><br/>
     <input id="chat-message-input" type="text" size="100"/><br/>
     <input id="chat-message-submit" type="button" value="Send"/>
+
     {{ room_name|json_script:"room-name" }}
     <script>
+        const room_id = {{room_id}};
+        const user_id = {{user_id}};
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
         let httpProtocol = 'http://'; 
@@ -42,10 +45,17 @@
         document.querySelector('#chat-message-submit').addEventListener("click",(e) => {
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
-            chatSocket.send(JSON.stringify({
-                'message': message
-            }));
-            messageInputDom.value = '';
+            if (message) {
+                const messagePayload = {
+                    'room_id': room_id,
+                    'user_id': user_id,
+                    'message': message,
+                    
+                };
+
+                chatSocket.send(JSON.stringify(messagePayload));
+                messageInputDom.value = '';
+            }
         });
     </script>
 </body>
