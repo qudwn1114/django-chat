@@ -110,8 +110,6 @@ class HomeView(LoginRequiredMixin, View):
         ).filter(id__in=chat_room_id_list).values(
             'id', 'room_name', 'created_at', 'newest_message', 'newest_message_created_at', 'chat_user_count'
         ).order_by('-newest_message_created_at', '-created_at')
-
-        print(chat_room_list)
         context['chat_room_list'] = chat_room_list
 
         return render(request, 'index.html', context)
@@ -173,7 +171,14 @@ def leave_chat_room(request: HttpRequest, *args, **kwargs):
             chat_user = ChatUser.objects.get(chat_room=chat_room, user=request.user)
         except:
             return JsonResponse({'message':'User Error'}, status = 400)
-        chat_user.delete()
+        try:
+            with transaction.atomic():
+                if ChatUser.objects.filter(chat_room=chat_room).exclude(user=request.user).exists():
+                    chat_user.delete()
+                else:
+                    chat_room.delete()
+        except:
+            return JsonResponse({'message':'Leave Error'}, status = 400)
         return JsonResponse({'message':'Bye~', 'url':reverse('chat:home')}, status = 200)
     else:
         return JsonResponse({'message':'Authentication Error'}, status = 401)
