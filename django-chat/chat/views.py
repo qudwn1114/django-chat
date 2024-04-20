@@ -91,6 +91,7 @@ class HomeView(LoginRequiredMixin, View):
     '''
         메인화면
     '''
+    login_url = 'chat:login'
     def get(self, request: HttpRequest, *args, **kwargs):
         context = {}
         chat_room_id_list = ChatUser.objects.filter(user=request.user).values_list('id', flat=True)
@@ -114,6 +115,7 @@ class ChatRoomView(LoginRequiredMixin, View):
     '''
         채팅방
     '''
+    login_url = 'chat:login'
     def get(self, request: HttpRequest, *args, **kwargs):
         context = {}
         room_name = kwargs.get('room_name')
