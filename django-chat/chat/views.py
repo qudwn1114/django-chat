@@ -7,8 +7,12 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.urls import reverse
 from django.db import transaction
-from django.db.models import OuterRef, Subquery, Count
+from django.db.models.functions import Cast
+from django.db.models import OuterRef, Subquery, Count, F, Case, When, Value as V, Func, CharField, IntegerField
+from django.views.decorators.http import require_http_methods
+
 from chat.models import ChatRoom, ChatUser, ChatMessage
+
 
 from email import message
 from http import client
@@ -106,6 +110,8 @@ class HomeView(LoginRequiredMixin, View):
         ).filter(id__in=chat_room_id_list).values(
             'id', 'room_name', 'created_at', 'newest_message', 'newest_message_created_at', 'chat_user_count'
         ).order_by('-newest_message_created_at', '-created_at')
+
+        print(chat_room_list)
         context['chat_room_list'] = chat_room_list
 
         return render(request, 'index.html', context)
@@ -127,6 +133,51 @@ class ChatRoomView(LoginRequiredMixin, View):
         context['room_id'] = chat_room.pk
         
         return render(request, 'room.html', context)
+    
+@require_http_methods(["GET"])
+def get_chat_message_list(request: HttpRequest, *args, **kwargs):
+    room_id = kwargs.get('room_id')
+    try:
+        chat_room = ChatRoom.objects.get(pk=room_id)
+    except:
+        return JsonResponse({'message': 'room id error'}, status=400)
+    
+    chat_message = ChatMessage.objects.annotate(  
+        userId = Case(
+            When(user_id=None, then=V(0)),
+            default=F('user_id'),
+            output_field=IntegerField()
+        ),
+        username = Case(
+            When(user_id=None, then=V('Anonymous User')),
+            default=F('user__username'),
+            output_field=CharField()
+        ),
+        createdAt = Cast('created_at', output_field=CharField())
+    ).filter(chat_room=chat_room).values('id', 'userId', 'username', 'message', 'createdAt').order_by('created_at')
+    data = {
+        "message_list" : list(chat_message)
+    }
+    return JsonResponse(data, status=201)
+
+@require_http_methods(["POST"])
+def leave_chat_room(request: HttpRequest, *args, **kwargs):
+    room_id = kwargs.get('room_id')
+    try:
+        chat_room = ChatRoom.objects.get(pk=room_id)
+    except:
+        return JsonResponse({'message': 'room id error'}, status=400)
+    
+    if request.user.is_authenticated:
+        try:
+            chat_user = ChatUser.objects.get(chat_room=chat_room, user=request.user)
+        except:
+            return JsonResponse({'message':'User Error'}, status = 400)
+        chat_user.delete()
+        return JsonResponse({'message':'Bye~', 'url':reverse('chat:home')}, status = 200)
+    else:
+        return JsonResponse({'message':'Authentication Error'}, status = 401)
+
 
 def send(socket, message): 
     socket.send(message.encode('utf-8'))

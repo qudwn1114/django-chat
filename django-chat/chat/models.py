@@ -26,7 +26,7 @@ class ChatUser(models.Model):
 
 class ChatMessage(models.Model):
     chat_room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name="chat_message")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="chat_message")
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="chat_message", null=True)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성일')
 

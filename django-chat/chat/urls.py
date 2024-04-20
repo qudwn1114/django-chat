@@ -9,4 +9,7 @@ urlpatterns = [
     path('signup/', views.SignupView.as_view(), name='signup'),
     path('logout/', LogoutView.as_view(next_page='chat:home'), name='logout'),
     path('chat/<str:room_name>/', views.ChatRoomView.as_view(), name='room'),
+
+    path('message/<int:room_id>/', views.get_chat_message_list),
+    path('leave/<int:room_id>/', views.leave_chat_room),
 ]

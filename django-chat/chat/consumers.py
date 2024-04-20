@@ -36,7 +36,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         user_id = text_data_json['user_id']
         message = text_data_json['message']
 
-        await self.save_message(room_id, user_id, message)
+        userId, username, message, created_at = await self.save_message(room_id, user_id, message)
+        str_created_at = created_at.strftime(("%H:%M"))
 
         # room group 에게 메세지 send
         # Send message to room group
@@ -44,7 +45,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': message
+                'message': message,
+                'userId' : userId,
+                'username' : username,
+                'createdAt' : str_created_at
             }
         )
 
@@ -52,11 +56,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from room group
     async def chat_message(self, event):
         message = event['message']
+        userId = event['userId']
+        username = event['username']
+        createdAt = event['createdAt']
         
         # WebSocket 에게 메세지 전송
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'message': message
+            'message': message,
+            'userId': userId,
+            'username' : username,
+            'createdAt': createdAt
         }))
 
     @database_sync_to_async
@@ -71,4 +81,5 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if not room_id or not user_id or not message:
             raise ValueError("채팅방, 발신자 및 메시지가 필요합니다.")
         # 메시지를 생성하고 데이터베이스에 저장합니다.
-        ChatMessage.objects.create(chat_room_id=room_id, user_id=user_id, message=message)
+        chat_message = ChatMessage.objects.create(chat_room_id=room_id, user_id=user_id, message=message)
+        return chat_message.user.pk,  chat_message.user.username, chat_message.message, chat_message.created_at
