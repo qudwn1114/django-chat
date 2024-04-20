@@ -105,7 +105,7 @@ class HomeView(LoginRequiredMixin, View):
             chat_user_count = Count('chat_user')
         ).filter(id__in=chat_room_id_list).values(
             'id', 'room_name', 'created_at', 'newest_message', 'newest_message_created_at', 'chat_user_count'
-        )
+        ).order_by('-newest_message_created_at', '-created_at')
         context['chat_room_list'] = chat_room_list
 
         return render(request, 'index.html', context)

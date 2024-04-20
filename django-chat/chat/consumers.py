@@ -6,12 +6,9 @@ import json
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        try:    
-            self.room_name = self.scope['url_route']['kwargs']['room_name']
-            self.room_group_name = f'chat_{self.room_name}'
-
-            # 채팅방을 가져오거나 생성합니다.
-            room = await self.get_or_create_room(room_name=self.room_id)
+        try:
+            self.room_id = self.scope['url_route']['kwargs']['room_id']
+            self.room_group_name = f"chat_room_{self.room_id}"
 
             # send 등 과 같은 동기적인 함수를 비동기적으로 사용하기 위해서는 async_to_sync 로 감싸줘야함
             # 현재 채널을 그룹에 추가합니다. 
@@ -35,11 +32,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        chat_room_id = text_data_json['chat_room_id']
+        room_id = text_data_json['room_id']
         user_id = text_data_json['user_id']
         message = text_data_json['message']
 
-        await self.save_message(chat_room_id, user_id, message)
+        await self.save_message(room_id, user_id, message)
 
         # room group 에게 메세지 send
         # Send message to room group
@@ -62,17 +59,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'message': message
         }))
 
+    @database_sync_to_async
+    def get_or_create_room(self, room_name):
+        room, created = ChatRoom.objects.get_or_create(room_name=room_name)
+        return room
 
-@database_sync_to_async
-def get_or_create_room(self, room_name):
-    room, created = ChatRoom.objects.get_or_create(room_name=room_name)
-    return room
 
-
-@database_sync_to_async
-def save_message(self, chat_room_id, user_id, message):
-    # 발신자 이메일과 메시지 텍스트가 제공되었는지 확인합니다.
-    if not chat_room_id or not user_id or not message:
-        raise ValueError("채팅방, 발신자 및 메시지가 필요합니다.")
-    # 메시지를 생성하고 데이터베이스에 저장합니다.
-    ChatMessage.objects.create(chat_room_id=chat_room_id, user_id=user_id, message=message)
+    @database_sync_to_async
+    def save_message(self, room_id, user_id, message):
+        # 발신자 이메일과 메시지 텍스트가 제공되었는지 확인합니다.
+        if not room_id or not user_id or not message:
+            raise ValueError("채팅방, 발신자 및 메시지가 필요합니다.")
+        # 메시지를 생성하고 데이터베이스에 저장합니다.
+        ChatMessage.objects.create(chat_room_id=room_id, user_id=user_id, message=message)

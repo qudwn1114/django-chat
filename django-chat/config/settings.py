@@ -38,7 +38,7 @@ INSTALLED_APPS = [
 
     'chat',
 ]
-ASGI_APPLICATION = 'config.routing.application'
+ASGI_APPLICATION = 'config.asgi.application'
 
 CHANNEL_LAYERS = {
     'default': {
