@@ -118,7 +118,7 @@ function leave(){
         },
         error: function(error) {  
             if(error.status == 401){
-                alert('로그인 해주세요.');
+                alert('Sign in please');
             }
             else{
                 alert(error.status + JSON.stringify(error.responseJSON));
