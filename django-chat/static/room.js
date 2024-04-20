@@ -41,11 +41,12 @@ chatSocket.onmessage = (e) => {
 chatSocket.onclose = (e) => {
     console.error('Chat socket closed unexpectedly');
 };
-document.querySelector('#chat-message-input').addEventListener("keyup",(e) => {
-    if (e.key === 13) {  // enter, return
+
+document.querySelector('#chat-message-input').onkeyup = function(e) {
+    if (e.keyCode === 13) {  // enter, return
         document.querySelector('#chat-message-submit').click();
     }
-});
+};
 
 document.querySelector('#chat-message-submit').addEventListener("click",(e) => {
     const messageInputDom = document.querySelector('#chat-message-input');
