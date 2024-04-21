@@ -42,20 +42,20 @@
 ## 시연
 
 ### 나의 계정을 생성하세요! 😀
-<img src = "https://github.com/qudwn1114/django-chat/assets/39257040/a288bc6e-9ee2-4479-bd99-7e23ab9f25af.gif" width="800px">
+<img src = "https://github.com/qudwn1114/django-chat/assets/39257040/a288bc6e-9ee2-4479-bd99-7e23ab9f25af" width="800px">
 
 ### 로그인 후 채팅방을 생성하세요! 😆
-<img src = "https://github.com/qudwn1114/django-chat/assets/39257040/04c4be57-04f6-4db3-9ec3-7e19e7b9bc38.gif" width="800px">
+<img src = "https://github.com/qudwn1114/django-chat/assets/39257040/04c4be57-04f6-4db3-9ec3-7e19e7b9bc38" width="800px">
 
 ### 채팅방에 참여해 실시간으로 1:1 채팅을 하세요! 🤩
-<img src = "https://github.com/qudwn1114/django-chat/assets/39257040/49ab07ae-d989-4726-bf78-42dd57a225ae.gif" width="800px">
-<img src = "https://github.com/qudwn1114/django-chat/assets/39257040/e41b8d64-7635-4d5a-87f3-bfb52c5a4ff5.gif" width="800px">
+<img src = "https://github.com/qudwn1114/django-chat/assets/39257040/49ab07ae-d989-4726-bf78-42dd57a225ae" width="800px">
+<img src = "https://github.com/qudwn1114/django-chat/assets/39257040/e41b8d64-7635-4d5a-87f3-bfb52c5a4ff5" width="800px">
 
 ### 채팅방에 여러명이 참여해 실시간으로 다중채팅을 하세요! 😎
-<img src = "https://github.com/qudwn1114/django-chat/assets/39257040/4c03397b-9832-44a1-ade1-b0210cbaa603.gif" width="800px">
+<img src = "https://github.com/qudwn1114/django-chat/assets/39257040/4c03397b-9832-44a1-ade1-b0210cbaa603" width="800px">
 
 ### 채팅방을 나갔다 와도 이전 채팅내역을 볼 수 있어요! 👀
-<img src = "https://github.com/qudwn1114/django-chat/assets/39257040/c02404c4-0cf0-4ca8-87a7-1971a283cf66.gif" width="800px">
+<img src = "https://github.com/qudwn1114/django-chat/assets/39257040/c02404c4-0cf0-4ca8-87a7-1971a283cf66" width="800px">
 
 ### 자리를 비울 때에는 로그아웃을 해주세요! 🚪
-<img src = "https://github.com/qudwn1114/django-chat/assets/39257040/902ac9fb-297b-48ac-b0e3-19abafd56461.gif" width="800px">
+<img src = "https://github.com/qudwn1114/django-chat/assets/39257040/902ac9fb-297b-48ac-b0e3-19abafd56461" width="800px">
