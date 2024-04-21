@@ -12,3 +12,7 @@
 |ASGI Server|Daphne v4.1.2|
 |Web Framework|Django v4.2.11|
 |DB|MySQL, Redis|
+
+## ERD
+
+<img width="891" alt="스크린샷 2024-04-21 오후 4 14 59" src="https://github.com/qudwn1114/django-chat/assets/39257040/242be141-8e6f-49bf-8aa7-484ace5e4ea0">
