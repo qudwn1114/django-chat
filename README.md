@@ -26,11 +26,13 @@
 
 ## 개발 의의
  * Python + Django 사용.
- * Http/Https 와 Ws/Wss 프로토콜을 모두 사용.
+ * http/https 와 ws/wss 프로토콜을 모두 사용.
  * 웹소켓 서버 구현 및 배포
  * Channels 라이브러리를 사용하여 Django 애플리케이션에 ASGI 기능 사용. (Django는 기본적으로 ASGI를 지원 X)
  * 타임어택 개발
 
 ## ERD
+- 회원은 여러 개의 채팅방을 가질 수 있다.
+- 채팅방은 여러 명의 회원을 수용할 수 있다.
 
 <img width="891" alt="스크린샷 2024-04-21 오후 4 14 59" src="https://github.com/qudwn1114/django-chat/assets/39257040/242be141-8e6f-49bf-8aa7-484ace5e4ea0">
