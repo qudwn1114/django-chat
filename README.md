@@ -1,5 +1,7 @@
 # Chat⌨️💬 
 
+![GitHub last commit](https://img.shields.io/github/last-commit/qudwn1114/django-chat)
+
 **총 개발인원 : 1명 (2024.04)**
 
 ## 프로젝트 소개
